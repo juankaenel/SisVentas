@@ -18,7 +18,7 @@ class CategoriaController extends Controller
     public function index(Request $request)
     {
         if ($request){
-            $query = trim($request->get('searchText'));
+            $query = trim($request->get('searchText')); /*para filtrar una busqueda*/
             /*Serach text es un objeto en el formulario para buscar categorias. trim es para quitar espacio al inicio y al final*/
             $categorias = DB::table('categoria')->where('nombre','LIKE','%'.$query.'%')
                 ->where('condicion','=','1')
