@@ -4,10 +4,19 @@
     {{--el contenido de lo q copie en la plantilla se va amostrar en la section de contenido renombrada como yield en admin --}}
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-            <h3>Listado de Categorías <a href="categoria/create"><button class="btn btn-success">Nuevo</button></a></h3>
+            <h3>Listado de Categorías</h3>
+            <a href="../../almacen/categoria/create" class="btn btn-success">Nueva Categoría</a>
+            <hr>
+
             @include('almacen.categoria.search')
         </div>
     </div>
+
+    @if (session('mensaje'))
+        <div class="alert alert-success">
+            {{ session('mensaje') }}
+        </div>
+    @endif
 
     <div class="row">
         <div class="col-xs-12">
@@ -26,14 +35,18 @@
                         <td>{{$cat->nombre}}</td>
                         <td>{{$cat->descripcion}}</td>
                         <td>
-                            <a href="">
-                                <button class="btn btn-info">Editar</button>
+
+
+                            <a href="{{route('categoria.edit', $cat->idcategoria)}}" class="btn btn-warning btn-sm">Editar</a>
+
+                            <a href="" data-target="#modal-delete-{{$cat->idcategoria}}" data-toggle="modal">
+                                <button class="btn btn-danger btn-sm">Eliminar</button>
                             </a>
-                            <a href="">
-                                <button class="btn btn-danger">Eliminar</button>
-                            </a>
+
+
                         </td>
                     </tr>
+                        @include('almacen.categoria.modal')
                     @endforeach
                 </table>
             </div>

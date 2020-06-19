@@ -45,8 +45,16 @@ class CategoriaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    //SI EL METODO DE ENVIO DEL FORMULARIO ES POST LLAMA A LA FUNCION STORE
     public function store(CategoriaFormRequest $request)
     {
+        /*validaciones*/
+
+        $request->validate([
+            'nombre'=>'required',
+            'descripcion'=>'required'
+        ]);
+
         /*almacena el objeto del modelo categoria en nuestra tabla categoria de la bd*/
         $categoria = new Categoria; /*categoria es el modelo*/
         $categoria->nombre = $request->get('nombre'); /*el 'nombre' es lo q viaja por el formulario*/
@@ -54,7 +62,7 @@ class CategoriaController extends Controller
         $categoria->condicion='1'; /*en un primer inicio va a ser a 1, cuando elimine va a ser 0*/
         $categoria->save(); //almaceno el objeto categoria en la tabla categoria de la bd
 
-        return Redirect::to('almacen/categoria');
+        return redirect('almacen/categoria')->with('mensaje', '¡Categoría creada!');;
     }
 
     /**
@@ -77,6 +85,9 @@ class CategoriaController extends Controller
      */
     public function edit($id)
     {
+       /*$categoria = App\Categoria::findOrFail($id);
+        return view('categoria.edit', compact('categoria'));*/
+
         return view('almacen.categoria.edit',['categoria'=>Categoria::findOrFail($id)]);
     }
 
@@ -87,13 +98,15 @@ class CategoriaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //SI EL METODO DE ENVIO DEL FORMULARIO ES PATCH LLAMA A LA FUNCION UPDATE
     public function update(CategoriaFormRequest $request, $id)
     {
         $categoria = Categoria::findOrFail($id);
         $categoria->nombre=$request->get('nombre');
         $categoria->descripcion = $request->get('descripcion');
         $categoria->update();
-        return Redirect::to('almacen/categoria');
+
+        return Redirect::to('almacen/categoria')->with('mensaje', '¡Categoría editada!');
     }
 
     /**
@@ -102,11 +115,15 @@ class CategoriaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    //SI EL METODO DE ENVIO DEL FORMULARIO ES DELETE LLAMA A LA FUNCION UPDATE
     public function destroy($id)
     {
         $categoria = Categoria::findOrFail($id);
         $categoria->condicion = '0'; /*cuando borro que pase a cero la condicion*/
         $categoria->update();
-        return Redirect::to('almacen/categoria');
+        return Redirect::to('almacen/categoria')->with('mensaje', 'Categoria Eliminada');
+
+
     }
 }
