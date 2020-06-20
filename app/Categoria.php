@@ -20,4 +20,10 @@ class Categoria extends Model
     protected $guarded = [
 
     ]; //estos se van a especificar cuando no queremos que se asignen al modelo
+
+    public function articulo()
+    {
+        //Una Categoria puede tener muchos artículos
+        return $this->hasMany(Articulo::class);
+    }
 }
