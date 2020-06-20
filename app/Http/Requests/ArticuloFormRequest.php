@@ -29,6 +29,7 @@ class ArticuloFormRequest extends FormRequest
             'nombre'=>'required|max:50',
             'stock'=>'required|numeric',
             'descripcion' => 'max:256',
+            /*'estado' => 'max:20',*/
             'imagen'=>'mimes:jpeg,bmp,png' //si no sube este tipo de archivos habrá un error en la validación
         ];
     }

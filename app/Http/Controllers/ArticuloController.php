@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App;
 use App\Articulo;
+use App\Categoria;
 use App\Http\Requests\ArticuloFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class ArticuloController extends Controller
 {
@@ -63,7 +65,7 @@ class ArticuloController extends Controller
         if ($request->hasFile('imagen')) { //esta imagen es la q recibimos del formulario
             $file = $request->file('imagen');
             //movemos la imagen q está en file
-            $file->move(public_patch() . '/imagenes/articulos/', $file->getClientOriginalName());
+            $file->move( '/imagenes/articulos/', $file->getClientOriginalName());
             //guardamos la ruta de imagen en el articulo
             $articuloNuevo->imagen = $file->getClientOriginalName();
         }
@@ -105,7 +107,7 @@ class ArticuloController extends Controller
         if ($request->hasFile('imagen')) { //esta imagen es la q recibimos del formulario
             $file = $request->file('imagen');
             //movemos la imagen q está en file
-            $file->move(public_patch() . '/imagenes/articulos/', $file->getClientOriginalName());
+            $file->move('/imagenes/articulos/', $file->getClientOriginalName());
             //guardamos la ruta de imagen en el articulo
             $articuloNuevo->imagen = $file->getClientOriginalName();
         }
@@ -117,10 +119,12 @@ class ArticuloController extends Controller
 
     public function destroy($id)
     {
-        $articulo = App\Articulo::findOrFail($id);
+//        $articulo = App\Articulo::findOrFail($id);
+        $articulo = Articulo::findOrFail($id);
         $articulo->estado = 'Inactivo';
         $articulo->update();
+        return Redirect::to('almacen/articulo')->with('mensaje', 'El articulo ahora está inactivo');
 
-        redirect('almacen/articulo');
+        /*no pude actualizar el estado a inactivo del primer articulo de la tabla. me pasa lo mismo con categorias*/
     }
 }

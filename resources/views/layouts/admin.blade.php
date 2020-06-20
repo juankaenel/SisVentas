@@ -54,8 +54,8 @@
                             <li class="user-header">
 
                                 <p>
-                                    www.jkdesarrolloweb.com  Desarrollo de aplicaciones web
-{{--                                    <small>www.youtube.com/jcarlosad7</small>--}}
+                                    www.jkdesarrolloweb.com Desarrollo de aplicaciones web
+                                    {{--                                    <small>www.youtube.com/jcarlosad7</small>--}}
                                 </p>
                             </li>
 
@@ -148,9 +148,6 @@
     </aside>
 
 
-
-
-
     <!--Contenido-->
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -164,9 +161,11 @@
                         <div class="box-header with-border">
                             <h3 class="box-title">Sistema de Ventas</h3>
                             <div class="box-tools pull-right">
-                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
 
-                                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                                </button>
                             </div>
                         </div>
                         <!-- /.box-header -->
@@ -174,36 +173,32 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <!--Contenido-->
-                                    @yield('contenido')
-                                    <!--Fin Contenido-->
+                                @yield('contenido')
+                                <!--Fin Contenido-->
                                 </div>
                             </div>
-
                         </div>
                     </div><!-- /.row -->
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
 
-</section><!-- /.content -->
-</div><!-- /.content-wrapper -->
-<!--Fin-Contenido-->
-<footer class="main-footer">
-    <div class="pull-right hidden-xs">
-        <b>Version</b> 1.0
-    </div>
-    <strong>Copyright &copy; 2020 <a href="www.jkdesarrolloweb.com">Juan Kaenel</a>.</strong> All rights reserved.
-</footer>
-
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+    <!--Fin-Contenido-->
+</div>
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 1.0
+        </div>
+        <strong>Copyright &copy; 2020 <a href="www.jkdesarrolloweb.com">Juan Kaenel</a>.</strong> All rights reserved.
+    </footer>
 
 
-<!-- jQuery 2.1.4 -->
-<script src="{{asset('js/jQuery-2.1.4.min.js')}}"></script>
-<!-- Bootstrap 3.3.5 -->
-<script src="{{asset('js/bootstrap.min.js')}}"></script>
-<!-- AdminLTE App -->
-<script src="{{asset('js/app.min.js')}}"></script>
-
+    <!-- jQuery 2.1.4 -->
+    <script src="{{asset('js/jQuery-2.1.4.min.js')}}"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{asset('js/app.min.js')}}"></script>
 </body>
 </html>

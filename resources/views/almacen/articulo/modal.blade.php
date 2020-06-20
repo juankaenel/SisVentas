@@ -1,9 +1,7 @@
-
-
 <div class="modal fade" id="modal-delete-{{$arti->idarticulo}}">
-    <form action="{{ route('categoria.destroy', $arti->idarticulo) }}" method="POST">
-        {{ method_field('DELETE') }}
-        {{ csrf_field() }}
+    <form action="{{ route('articulo.destroy',$arti->idarticulo) }}" method="POST">
+        @method('DELETE')
+        @csrf
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -18,9 +16,7 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        Cerrar
-                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-primary">Confirmar</button>
                 </div>
             </div>

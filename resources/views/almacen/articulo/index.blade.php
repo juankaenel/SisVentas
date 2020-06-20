@@ -26,6 +26,7 @@
                     <th>Id</th>
                     <th>Nombre</th>
                     <th>Codigo</th>
+                    <th>Categoría</th>
                     <th>Stock</th>
                     <th>Descripción</th>
                     <th>Imagen</th>
@@ -38,6 +39,7 @@
                         <td>{{$arti->idarticulo}}</td>
                         <td>{{$arti->nombre}}</td>
                         <td>{{$arti->codigo}}</td>
+                        <td>{{$arti->categoria}}</td>
                         <td>{{$arti->stock}}</td>
                         <td>{{$arti->descripcion}}</td>
                         <td>
@@ -47,6 +49,7 @@
                         <td>{{$arti->estado}}</td>
                         <td>
                             <a href="{{route('articulo.edit', $arti->idarticulo)}}" class="btn btn-warning btn-sm">Editar</a>
+
                             <a href="" data-target="#modal-delete-{{$arti->idarticulo}}" data-toggle="modal">
                                 <button class="btn btn-danger btn-sm">Eliminar</button>
                             </a>
@@ -61,5 +64,6 @@
 
         </div>
     </div>
+
 
 @endsection

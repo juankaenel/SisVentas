@@ -19,23 +19,54 @@
             @endif
 
 
-            <form method="POST" action="{{ route('articulo.store') }}">
+            <form method="POST" action="{{ route('articulo.store') }}" enctype="multipart/form-data">
                 @csrf
-                {{ csrf_field() }}
-            <div class="form-group">
-                <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control"  placeholder="Nombre..">
-            </div>
 
-            <div class="form-group">
-                <label for="nombre">Descripción</label>
-                <input type="text" name="descripcion" class="form-control"  placeholder="Descripcion..">
-            </div>
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" name="nombre" class="form-control"  required value="{{old('nombre')}}">
+                </div>
 
-            <div class="form-group">
-                <button class="btn btn-primary" type="submit">Guardar</button>
-                <button class="btn btn-danger" type="reset">Borrar</button>
-            </div>
+                <div class="form-group">
+                    <label for="nombre">Categoría</label>
+                    <select name="idcategoria" class="form-control">
+                        @foreach($categorias as $cat)
+                            <option value="{{$cat->idcategoria}}">{{$cat->nombre}}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="nombre">Codigo</label>
+                    <input type="number" name="codigo" class="form-control"  required value="{{old('codigo')}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="nombre">Stock</label>
+                    <input type="number" name="stock" class="form-control" required value="{{old('stock')}}">
+                </div>
+
+                <div class="form-group">
+                <table>
+                    <label for="imagen">Imágen</label>
+                    <tr>
+                        <td>
+                            <input accept="image/*" type="file" name="imagen">
+                        </td>
+                    </tr>
+                </table>
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Descripción</label>
+                    <input type="text" name="descripcion" class="form-control" required value="{{old('nombre')}}">
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Guardar</button>
+                    <button class="btn btn-danger" type="reset">Borrar</button>
+                </div>
+
 
             </form>
 

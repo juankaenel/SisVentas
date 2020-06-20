@@ -7,7 +7,6 @@
             <h3>Editar Articulo {{$articulo->nombre}}</h3>
 
 
-
             @if(count($errors)>0)
                 <div class="alert alert-danger">
                     <ul>
@@ -18,8 +17,8 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif
-            <!--recibo una categoria del controlador
+        @endif
+        <!--recibo una categoria del controlador
             cuando se ejecute el form, envia el formulario al controlador y recibe el metodo patch el id q le envio
             -->
 
@@ -27,20 +26,60 @@
                 @method('PUT')
                 @csrf
 
-            <div class="form-group">
-                <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control" value="{{$articulo->nombre}}" placeholder="Nombre..">
-            </div>
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" name="nombre" class="form-control" value="{{$articulo->nombre}}" required
+                           value="{{old('nombre')}}">
+                </div>
 
-            <div class="form-group">
-                <label for="nombre">Descripción</label>
-                <input type="text" name="descripcion" class="form-control" value="{{$articulo->descripcion}}" placeholder="Descripcion..">
-            </div>
+                <div class="form-group">
+                    <label for="nombre">Categoría</label>
+                    <select name="idcategoria" class="form-control">
+                        @foreach($categorias as $cat)
+                            @if($cat->idcategoria==$articulo->idcategoria)
+                                <option value="{{$cat->idcategoria}}" selected>{{$cat->nombre}}</option>
+                            @else
+                                <option value="{{$cat->idcategoria}}" >{{$cat->nombre}}</option>
+                            @endif
+                                @endforeach
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <button class="btn btn-primary" type="submit">Guardar</button>
-                <button class="btn btn-danger" type="reset">Borrar</button>
-            </div>
+
+                <div class="form-group">
+                    <label for="nombre">Codigo</label>
+                    <input type="number" name="codigo" class="form-control" value="{{$articulo->codigo}}" required
+                           value="{{old('codigo')}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="nombre">Stock</label>
+                    <input type="number" name="stock" class="form-control" value="{{$articulo->stock}}" required
+                           value="{{old('stock')}}">
+                </div>
+
+                <div class="form-group">
+                    <table>
+                        <label for="imagen">Imágen</label>
+                        <tr>
+                            <td>
+                                <input accept="image/*" type="file" name="imagen" value="{{$articulo->imagen}}">
+                                @if(($articulo->imagen)!="")
+                                <img src="{{asset('imagenes/articulos/'.$articulo->imagen)}}" height="200px" width="200px" class="img-thumbnail">
+                                @endif
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Descripción</label>
+                    <input type="text" name="descripcion" class="form-control" value="{{$articulo->descripcion}}">
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Guardar</button>
+                    <button class="btn btn-danger" type="reset">Borrar</button>
+                </div>
             </form>
 
         </div>
