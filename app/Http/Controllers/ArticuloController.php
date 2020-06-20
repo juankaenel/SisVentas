@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App;
 use App\Articulo;
 use App\Http\Requests\ArticuloFormRequest;
@@ -13,22 +14,38 @@ class ArticuloController extends Controller
     {
         if ($request) {
 
+            /*  $query = trim($request->input('searchText'));
+
+              $articulos = Articulo::with('categoria')->get();
+              $articulos->estado = 'Activo';
+              $articulos = App\Articulo::paginate(7);
+
+              return view('almacen.articulo.index', [
+                  'articulos' => $articulos,
+                  'searchText' => $query
+              ]);*/
+
             $query = trim($request->input('searchText'));
-
-            $articulos = Articulo::with('categoria')->get();
-
+            $articulos = DB::table('articulo as a')
+                ->join('categoria as c', 'a.idcategoria', '=', 'c.idcategoria')
+                ->select('a.idarticulo', 'a.nombre', 'a.codigo', 'a.stock', 'c.nombre as categoria', 'a.descripcion', 'a.imagen', 'a.estado')
+                ->where('a.nombre', 'LIKE', '%' . $query . '%')
+                ->orWhere('a.descripcion','LIKE','%'.$query.'%')
+                ->orderBy('a.idarticulo', 'desc')
+                ->paginate(7);
             return view('almacen.articulo.index', [
                 'articulos' => $articulos,
                 'searchText' => $query
             ]);
+
         }
     }
 
 
     public function create()
     {
-        $categorias = App\Categoria::where('condicion','=', '1')->get();
-        return view('almacen.articulo.create',compact('categorias'));
+        $categorias = App\Categoria::where('condicion', '=', '1')->get();
+        return view('almacen.articulo.create', compact('categorias'));
 
     }
 
@@ -37,18 +54,18 @@ class ArticuloController extends Controller
     function store(ArticuloFormRequest $request)
     {
         $articuloNuevo = new App\Articulo;
-        $articuloNuevo->idcategoria=$request->idcategoria;
-        $articuloNuevo->codigo=$request->codigo;
+        $articuloNuevo->idcategoria = $request->idcategoria;
+        $articuloNuevo->codigo = $request->codigo;
         $articuloNuevo->nombre = $request->nombre;
         $articuloNuevo->stock = $request->stock;
         $articuloNuevo->descripcion = $request->descripcion;
         $articuloNuevo->estado = 'Activo'; //cuando cree un articulo nuevo va a ser activo
-        if($request->hasFile('imagen')){ //esta imagen es la q recibimos del formulario
-            $file=$request->file('imagen');
+        if ($request->hasFile('imagen')) { //esta imagen es la q recibimos del formulario
+            $file = $request->file('imagen');
             //movemos la imagen q está en file
-            $file->move(public_patch().'/imagenes/articulos/',$file->getClientOriginalName());
+            $file->move(public_patch() . '/imagenes/articulos/', $file->getClientOriginalName());
             //guardamos la ruta de imagen en el articulo
-            $articuloNuevo->imagen=$file->getClientOriginalName();
+            $articuloNuevo->imagen = $file->getClientOriginalName();
         }
 
         $articuloNuevo->save();
@@ -69,8 +86,8 @@ class ArticuloController extends Controller
     function edit($id)
     {
         $articulo = App\Articulo::findOrFail($id);
-        $categorias = App\Categoria::where('condicion','=', '1')->get();
-        return view('almacen.articulo.edit', compact('articulo','categorias'));
+        $categorias = App\Categoria::where('condicion', '=', '1')->get();
+        return view('almacen.articulo.edit', compact('articulo', 'categorias'));
     }
 
 
@@ -79,18 +96,18 @@ class ArticuloController extends Controller
     {
         $articuloNuevo = App\Articulo::findOrFail($id);
 
-        $articuloNuevo->idcategoria=$request->idcategoria;
-        $articuloNuevo->codigo=$request->codigo;
+        $articuloNuevo->idcategoria = $request->idcategoria;
+        $articuloNuevo->codigo = $request->codigo;
         $articuloNuevo->nombre = $request->nombre;
         $articuloNuevo->stock = $request->stock;
         $articuloNuevo->descripcion = $request->descripcion;
         //$articuloNuevo->estado = 'Activo'; //cuando cree un articulo nuevo va a ser activo
-        if($request->hasFile('imagen')){ //esta imagen es la q recibimos del formulario
-            $file=$request->file('imagen');
+        if ($request->hasFile('imagen')) { //esta imagen es la q recibimos del formulario
+            $file = $request->file('imagen');
             //movemos la imagen q está en file
-            $file->move(public_patch().'/imagenes/articulos/',$file->getClientOriginalName());
+            $file->move(public_patch() . '/imagenes/articulos/', $file->getClientOriginalName());
             //guardamos la ruta de imagen en el articulo
-            $articuloNuevo->imagen=$file->getClientOriginalName();
+            $articuloNuevo->imagen = $file->getClientOriginalName();
         }
 
         $articuloNuevo->save();
