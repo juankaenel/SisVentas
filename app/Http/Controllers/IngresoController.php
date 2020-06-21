@@ -7,7 +7,7 @@ use App\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ProveedorController extends Controller
+class IngresoController extends Controller
 {
     public function __construct(){
 
@@ -16,23 +16,29 @@ class ProveedorController extends Controller
     public function index(Request $request)
     {
         if ($request){
-            $query = trim($request->get('searchText')); /*para filtrar una busqueda*/
-            /*Serach text es un objeto en el formulario para buscar categorias. trim es para quitar espacio al inicio y al final*/
-            $personas = DB::table('persona')
-                ->where('nombre','LIKE','%'.$query.'%')
-                ->where('tipo_persona','=','Proveedor') //o buscame por...
-                ->orwhere('num_documento','LIKE','%'.$query.'%')
-                ->where('tipo_persona','=','Proveedor')
-                ->orderBy('idpersona','desc')
+            $query = trim($request->get('searchText'));
+            $ingresos = DB::table('ingreso as i')
+                ->join('persona as p','i.proveedor','=','p.idpersona')
+                ->join('detalle_ingreso as di', 'i.idingreso','=','di.idingreso')
+                ->select('i.idingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.num_comprobante','i.impuesto','i.estado',DB::raw('sum(di.cantidad*precio_compra) as total'))
+                ->where('i.num_comprobante','LIKE','%'.$query.'%')
+                ->orderBy('i.idingreso','desc')
+                ->groupBy('i.idingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.num_comprobante','i.impuesto','i.estado')
                 ->paginate(7);
 
-            return view('compras.proveedor.index',["personas"=>$personas,"searchText"=>$query]);
+            return view('compras.ingreso.index',["ingresos"=>$ingresos,"searchText"=>$query]);
         }
     }
 
     public function create()
     {
-        return view("compras.proveedor.create");
+        $personas = DB::table('persona')->where('tipo_persona','=','Proveedor')->get();
+        $articulos = DB::table('articulos as art')
+            ->select(DB::raw('CONCAT(art.codigo, " ",art.nombre) as articulo'),'idarticulo')
+            ->where('art.estado','=','Activo')
+            ->get();
+
+        return view("compras.ingreso.create",["personas"=>"$personas","articulos"=>"$articulos"]);
     }
 
     //SI EL METODO DE ENVIO DEL FORMULARIO ES POST LLAMA A LA FUNCION STORE
