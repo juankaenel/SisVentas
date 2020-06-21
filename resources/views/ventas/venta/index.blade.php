@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
 @section('contenido')
-
+    {{--el contenido de lo q copie en la plantilla se va amostrar en la section de contenido renombrada como yield en admin --}}
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-            <h3>Listado de Categorías</h3>
-            <a href="../../almacen/categoria/create" class="btn btn-success">Nueva Categoría</a>
+            <h3>Listado de Clientes</h3>
+            <a href="../../ventas/cliente/create" class="btn btn-success">Nuevo cliente</a>
             <hr>
 
-            @include('almacen.categoria.search')
+            @include('ventas.cliente.search')
         </div>
     </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PersonaFormRequest;
 use App\Persona;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class ClienteController extends Controller
@@ -39,9 +40,10 @@ class ClienteController extends Controller
         $persona->tipo_persona= 'Cliente';
         $persona->nombre = $request->get('nombre');
         $persona->tipo_documento = $request->get('tipo_documento');
-        $persona->descripcion = $request->get('descripcion');
+        $persona->num_documento = $request->get('num_documento');
         $persona->telefono = $request->get('telefono');
-        $persona->tipo_documento = $request->get('email');
+        $persona->email = $request->get('email');
+        $persona->direccion = $request->get('direccion');
 
         $persona->save();
 
@@ -65,9 +67,10 @@ class ClienteController extends Controller
         //el tipo de persona no porque si voy a editar va a seguir siendo un cliente
         $persona->nombre = $request->get('nombre');
         $persona->tipo_documento = $request->get('tipo_documento');
-        $persona->descripcion = $request->get('descripcion');
+        $persona->num_documento = $request->get('num_documento');
         $persona->telefono = $request->get('telefono');
-        $persona->tipo_documento = $request->get('email');
+        $persona->email = $request->get('email');
+        $persona->direccion = $request->get('direccion');
         $persona->update();
 
         return redirect('ventas/cliente')->with('mensaje', '¡Persona editada!');
