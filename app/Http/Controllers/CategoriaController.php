@@ -10,11 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class CategoriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
+
     public function index(Request $request)
     {
         if ($request){
@@ -29,22 +25,11 @@ class CategoriaController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function create()
     {
      return view("almacen.categoria.create");
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     //SI EL METODO DE ENVIO DEL FORMULARIO ES POST LLAMA A LA FUNCION STORE
     public function store(CategoriaFormRequest $request)
     {
@@ -65,24 +50,13 @@ class CategoriaController extends Controller
         return redirect('almacen/categoria')->with('mensaje', '¡Categoría creada!');;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         /*la categoria que voy a mostrar va a ser igual al modelo categoria y le paso el id de la categoria q le quiero pasar*/
       return view('almacen.categoria.show',['categoria'=>Categoria::findOrFail($id)]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
        /*$categoria = App\Categoria::findOrFail($id);
@@ -91,13 +65,6 @@ class CategoriaController extends Controller
         return view('almacen.categoria.edit',['categoria'=>Categoria::findOrFail($id)]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     //SI EL METODO DE ENVIO DEL FORMULARIO ES PATCH LLAMA A LA FUNCION UPDATE
     public function update(CategoriaFormRequest $request, $id)
     {
@@ -109,13 +76,6 @@ class CategoriaController extends Controller
         return Redirect::to('almacen/categoria')->with('mensaje', '¡Categoría editada!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
     //SI EL METODO DE ENVIO DEL FORMULARIO ES DELETE LLAMA A LA FUNCION UPDATE
     public function destroy($id)
     {
@@ -123,7 +83,5 @@ class CategoriaController extends Controller
         $categoria->condicion = '0'; /*cuando borro que pase a cero la condicion*/
         $categoria->update();
         return Redirect::to('almacen/categoria')->with('mensaje', 'Categoria Eliminada');
-
-
     }
 }
