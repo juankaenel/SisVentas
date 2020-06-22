@@ -22,7 +22,7 @@ class IngresoController extends Controller
         if ($request){
             $query = trim($request->get('searchText'));
             $ingresos = DB::table('ingreso as i')
-                ->join('persona as p','i.proveedor','=','p.idpersona')
+                ->join('persona as p','i.idproveedor','=','p.idpersona')
                 ->join('detalle_ingreso as di', 'i.idingreso','=','di.idingreso')
                 ->select('i.idingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.num_comprobante','i.impuesto','i.estado',DB::raw('sum(di.cantidad*precio_compra) as total'))
                 ->where('i.num_comprobante','LIKE','%'.$query.'%')
@@ -37,12 +37,12 @@ class IngresoController extends Controller
     public function create()
     {
         $personas = DB::table('persona')->where('tipo_persona','=','Proveedor')->get();
-        $articulos = DB::table('articulos as art')
-            ->select(DB::raw('CONCAT(art.codigo, " ",art.nombre) as articulo'),'idarticulo')
+        $articulos = DB::table('articulo as art')
+            ->select(DB::raw('CONCAT(art.codigo, " ",art.nombre) as articulo'),'art.idarticulo')
             ->where('art.estado','=','Activo')
             ->get();
 
-        return view("compras.ingreso.create",["personas"=>"$personas","articulos"=>"$articulos"]);
+        return view("compras.ingreso.create",["personas"=>$personas,"articulos"=>$articulos]);
     }
 
     //nos permitirá guardar tanto los ingresos como los detalles de ingreso
