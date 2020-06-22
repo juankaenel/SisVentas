@@ -22,7 +22,7 @@
             cuando se ejecute el form, envia el formulario al controlador y recibe el metodo patch el id q le envio
             -->
 
-            <form action="{{ route('articulo.update', $articulo->idarticulo) }}" method="POST">
+            <form action="{{ route('articulo.update', $articulo->idarticulo) }}" method="POST" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
 
@@ -63,9 +63,9 @@
                         <label for="imagen">Imágen</label>
                         <tr>
                             <td>
-                                <input accept="image/*" type="file" name="imagen" value="{{$articulo->imagen}}">
+                                <input accept="image/*" type="file" name="imagen">
                                 @if(($articulo->imagen)!="")
-                                <img src="{{asset('imagenes/articulos/'.$articulo->imagen)}}" height="200px" width="200px" class="img-thumbnail">
+                                <img src="{{asset('/imagenes/articulos/'.$articulo->imagen)}}" height="200px" width="200px" class="img-thumbnail">
                                 @endif
                             </td>
                         </tr>
