@@ -34,7 +34,7 @@ class ArticuloController extends Controller
                 ->where('estado','=','Activo')//no funca
                 ->where('a.nombre', 'LIKE', '%' . $query . '%')
                 ->orWhere('a.descripcion','LIKE','%'.$query.'%')
-                ->orderBy('a.idarticulo', 'desc')
+                ->groupBy('a.idarticulo', 'desc')
                 ->paginate(7);
 
             return view('almacen.articulo.index', [

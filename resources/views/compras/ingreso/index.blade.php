@@ -40,7 +40,7 @@
                     <tr>
 
                         <td>{{$ing->fecha_hora}}</td>
-                        <td>{{$ing->proveedor}}</td>
+                        <td>{{$ing->nombre}}</td>
                         <td>{{$ing->tipo_comprobante.': '.$ing->serie_comprobante. '-' .$ing->num_comprobante}}</td>
                         {{-- <td>{{$ing->serie_comprobante}}</td>
                         <td>{{$ing->num_comprobante}}</td>--}}

@@ -43,6 +43,8 @@ class IngresoController extends Controller
             ->get();
 
         return view("compras.ingreso.create",["personas"=>$personas,"articulos"=>$articulos]);
+
+
     }
 
     //nos permitirá guardar tanto los ingresos como los detalles de ingreso
@@ -62,6 +64,10 @@ class IngresoController extends Controller
             $ingreso->estado='A';
             $ingreso->save();
 
+
+
+
+
             /*estos datos vienen del mismo formulario*/
 
             //Tabla detalle_ingreso
@@ -73,20 +79,18 @@ class IngresoController extends Controller
             //esto hago porque se va a enviar un array de detalles
             $cont = 0; //esto me va a controlar los articulos
             while ($cont < count($idarticulo)){
-                $cont = $cont+1;
-                $detalle = new DetalleIngreso();
-                $detalle->idingreso = $ingreso->idingreso;
-                $detalle->idarticulo = $ingreso->idarticulo[$cont]; //esto ya va a depender del articulo en la posicion tal del input q se envia
-                $detalle->cantidad = $ingreso->cantidad[$cont];
-                $detalle->precio_compra= $ingreso->precio_compra[$cont];
-                $detalle->precio_venta = $ingreso->precio_venta[$cont];
+                $detalle=new DetalleIngreso();
+                $detalle->idingreso=$ingreso->idingreso;
+                $detalle->idarticulo=$idarticulo[$cont];
+                $detalle->cantidad=$cantidad[$cont];
+                $detalle->precio_compra=$precio_compra[$cont];
+                $detalle->precio_venta=$precio_venta[$cont];
                 $detalle->save();
-
-                $cont= $cont+1;
+                $cont=$cont+1;
             }
 
 
-         DB:commit();//finalizo la transaccion
+            DB::commit();;//finalizo la transaccion
         }catch (\Exception $e){
             DB::rollback(); //si ocurre un error cancelo la transacción
         }
@@ -98,17 +102,20 @@ class IngresoController extends Controller
     public function show($id)
     {
         $ingreso = DB::table('ingreso as i')
-            ->join('persona as p','i.proveedor','=','p.idpersona')
-            ->join('detalle_ingreso as di', 'i.idingreso','=','di.idingreso')
+            ->join('persona as p','i.idproveedor','=','p.idpersona')
+            ->join('detalle_ingreso as di','i.idingreso','=','di.idingreso')
             ->select('i.idingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.num_comprobante','i.impuesto','i.estado',DB::raw('sum(di.cantidad*precio_compra) as total'))
-            ->where('i.ingreso','=',$id)
+            ->where('i.idingreso','=',$id)
+            ->groupBy('i.idingreso', 'i.fecha_hora', 'p.nombre', 'i.tipo_comprobante', 'i.serie_comprobante',
+                'i.num_comprobante', 'i.impuesto', 'i.estado')
             ->first(); //solo mostrame el primer ingreso q cumpla, porque solo va a cumplir un ingreso
 
         $detalles = DB::table('detalle_ingreso as d')
             ->join('articulo as a','d.idarticulo','=','a.idarticulo')
-            ->select('a.nombre as articulo','d.cantidad','d.precio','d.precio_compra','d.precio_venta')
-            ->where('d.idingreso','=',$id)->get(); //de ese detalle ingreso especifico, hacer el filtro de articulo y detalle ingreso y mostrame el nombre el articulo la cantidad el precio de compra y venta
-        return view('compras.ingreso.show',['ingreso'=>$ingreso,'detalles'=>$detalles]);/*le mando el array ingreso con todos los valores y tmb el detalle*/
+            ->select('a.nombre as articulo','d.cantidad','d.precio_compra','d.precio_venta')
+            ->where('d.idingreso','=',$id)
+            ->get(); //de ese detalle ingreso especifico, hacer el filtro de articulo y detalle ingreso y mostrame el nombre el articulo la cantidad el precio de compra y venta
+        return view('compras.ingreso.show',['ingreso'=>$ingreso,'detalles'=>$detalles]);//le mando el array ingreso con todos los valores y tmb el detalle*/
     }
 
 

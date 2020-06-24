@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
-
+use Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IngresoFormRequest extends FormRequest
@@ -13,7 +13,7 @@ class IngresoFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,11 +24,11 @@ class IngresoFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_proveedor'=>'required',
-            'tipo_comprobante'=>'required|max=20',
-            'serie_comprobante'=>'required|max=7',
-            'num_comprobante'=>'required|max=20',
-            'id_articulo'=>'required',
+            'idproveedor'=>'required',
+            'tipo_comprobante'=>'required|max:20',
+            'serie_comprobante'=>'required|max:7',
+            'num_comprobante'=>'required|max:20',
+            'idarticulo'=>'required',
             'cantidad'=>'required',
             'precio_compra'=>'required',
             'precio_venta'=>'required'
