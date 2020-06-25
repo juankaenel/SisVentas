@@ -14,7 +14,7 @@ class UsuarioController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(UsuarioFormRequest $request){
+    public function index(Request $request){
 
             if ($request){
                 $query = trim($request->get('searchText'));
@@ -41,11 +41,11 @@ class UsuarioController extends Controller
     }
 
     public function edit($id){
-        return view('seguridad.usuario.edit',["usuario"=>User::findOrFile($id)]);
+        return view('seguridad.usuario.edit',["usuario"=>User::findOrFail($id)]);
     }
 
     public function update(UsuarioFormRequest $request, $id){
-        $usuario = User::findOrFile($id);
+        $usuario = User::findOrFail($id);
         $usuario->name=$request->get('name');
         $usuario->email=$request->get('email');
         $usuario->password=bcrypt($request->get('password'));

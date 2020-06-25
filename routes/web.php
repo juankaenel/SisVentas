@@ -24,7 +24,7 @@ Route::resource('ventas/cliente','ClienteController');
 Route::resource('ventas/venta','VentaController');
 Route::resource('compras/proveedor','ProveedorController');
 Route::resource('compras/ingreso','IngresoController');
-
+Route::resource('seguridad/usuario','UsuarioController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
