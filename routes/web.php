@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
 Route::resource('almacen/categoria','CategoriaController');
@@ -23,3 +24,8 @@ Route::resource('ventas/cliente','ClienteController');
 Route::resource('ventas/venta','VentaController');
 Route::resource('compras/proveedor','ProveedorController');
 Route::resource('compras/ingreso','IngresoController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
