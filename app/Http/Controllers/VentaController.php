@@ -7,6 +7,7 @@ use App\DetalleVenta;
 use App\Http\Requests\VentaFormRequest;
 use App\Ingreso;
 use App\Venta;
+use App\Persona;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -25,11 +26,11 @@ class VentaController extends Controller
             $query = trim($request->get('searchText'));
             $ventas = DB::table('venta as v')
                 ->join('persona as p','v.idcliente','=','p.idpersona')
-                ->join('detalle_venta as dv', 'v.idventa','=','dv.idventa')
+                ->join('detalle_venta as dv', 'v.idventa','=','dv.id_venta')
                 ->select('v.idventa','v.fecha_hora','p.nombre','v.tipo_comprobante','v.serie_comprobante','v.num_comprobante','v.impuesto','v.estado','v.total_venta') //v.total_venta es el campo de la tabla de venta para mostrar el total de la venta
                 ->where('v.num_comprobante','LIKE','%'.$query.'%')
                 ->orderBy('v.idventa','desc')
-                ->groupBy('v.idventa','v.fecha_hora','p.nombre','v.tipo_comprobante','v.serie_comprobante','v.num_comprobante','v.impuesto','v.estado')
+                ->groupBy('v.idventa','v.fecha_hora','p.nombre','v.tipo_comprobante','v.serie_comprobante','v.num_comprobante','v.impuesto','v.estado','v.total_venta')
                 ->paginate(7);
 
             return view('ventas.venta.index',["ventas"=>$ventas,"searchText"=>$query]); /*envio por parámetro ventas que es un array todas las $ventas*/
@@ -54,7 +55,7 @@ class VentaController extends Controller
 
     public function store(VentaFormRequest $request)
     {
-        try {
+      /*  try {*/
             DB::beginTransaction();//inicio la transaccion   ----   almacenamos primero en la base de datos primero el ingreso y dsp el detalle de ingreso, pero los dos deben almacenarse*/
             //tabla ingreso
             $venta = new Venta();
@@ -80,8 +81,8 @@ class VentaController extends Controller
             $cont = 0; //esto me va a controlar los articulos
             while ($cont < count($idarticulo)){
                 $detalle=new DetalleVenta();
-                $detalle->idventa=$venta->idventa;
-                $detalle->idarticulo=$idarticulo[$cont];
+                $detalle->id_venta=$venta->idventa;
+                $detalle->id_articulo=$idarticulo[$cont];
                 $detalle->cantidad=$cantidad[$cont];
                 $detalle->descuento=$descuento[$cont];
                 $detalle->precio_venta=$precio_venta[$cont];
@@ -91,9 +92,9 @@ class VentaController extends Controller
 
 
             DB::commit();;//finalizo la transaccion
-        }catch (\Exception $e){
+     /*   }catch (\Exception $e){
             DB::rollback(); //si ocurre un error cancelo la transacción
-        }
+        }*/
 
         return redirect('ventas/venta'); //redirigime al index
     }
@@ -103,20 +104,19 @@ class VentaController extends Controller
     {
         $venta = DB::table('venta as v')
             ->join('persona as p','v.idcliente','=','p.idpersona')
-            ->join('detalle_venta as dv','v.idventa','=','dv.idventa')
-            ->select('v.idventa','v.fecha_hora','p.nombre','v.tipo_comprobante','v.serie_comprobante','v.num_comprobante','v.impuesto','v.estado','vtotal_venta')
+            ->join('detalle_venta as dv','v.idventa','=','dv.id_venta')
+            ->select('v.idventa','v.fecha_hora','p.nombre','v.tipo_comprobante','v.serie_comprobante','v.num_comprobante','v.impuesto','v.estado','v.total_venta')
             ->where('v.idventa','=',$id)
             /*->groupBy('v.idingreso', 'v.fecha_hora', 'p.nombre', 'v.tipo_comprobante', 'v.serie_comprobante',
                 'v.num_comprobante', 'v.impuesto', 'v.estado')*/
-            ->first() //solo mostrame el primer ingreso q cumpla, porque solo va a cumplir un ingreso
-            ->get();
+            ->first(); //solo mostrame el primer ingreso q cumpla, porque solo va a cumplir un ingreso
 
         $detalles = DB::table('detalle_venta as d')
-            ->join('articulo as a','d.idarticulo','=','a.idarticulo')
-            ->select('a.nombre as articulo','d.cantidad','d.precio_venta')
-            ->where('d.idventa','=',$id)
+            ->join('articulo as a','d.id_articulo','=','a.idarticulo')
+            ->select('a.nombre as articulo','d.cantidad','d.descuento','d.precio_venta')
+            ->where('d.id_venta','=',$id)
             ->get(); //de ese detalle ingreso especifico, hacer el filtro de articulo y detalle ingreso y mostrame el nombre el articulo la cantidad el precio de compra y venta
-        return view('ventas.venta.show',['Venta'=>$venta,'detalles'=>$detalles]);//le mando el array ingreso con todos los valores y tmb el detalle*/
+        return view('ventas.venta.show',['venta'=>$venta,'detalles'=>$detalles]);//le mando el array ingreso con todos los valores y tmb el detalle*/
 
     }
 

@@ -1,7 +1,7 @@
 
 
-<div class="modal fade" id="modal-delete-{{$cat->idcategoria}}">
-    <form action="{{ route('categoria.destroy', $cat->idcategoria) }}" method="POST">
+<div class="modal fade" id="modal-delete-{{$ven->idventa}}">
+    <form action="{{ route('venta.destroy', $ven->idventa) }}" method="POST">
         {{ method_field('DELETE') }}
         {{ csrf_field() }}
         <div class="modal-dialog">
@@ -10,11 +10,11 @@
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden>x</span>
                     </button>
-                    <h4 class="modal-title">Eliminar Categoría</h4>
+                    <h4 class="modal-title">Cancelar Venta</h4>
                 </div>
                 <div class="modal-body">
                     <p>
-                        Confirme si desea Eliminar <strong>{{ $cat->nombre }}</strong>
+                        Confirme si desea Cancelar la venta: <strong>{{ $ven->nombre }}</strong>
                     </p>
                 </div>
                 <div class="modal-footer">

@@ -31,10 +31,10 @@ class ArticuloController extends Controller
             $articulos = DB::table('articulo as a')
                 ->join('categoria as c', 'a.idcategoria', '=', 'c.idcategoria')
                 ->select('a.idarticulo', 'a.nombre', 'a.codigo', 'a.stock', 'c.nombre as categoria', 'a.descripcion', 'a.imagen', 'a.estado')
-                ->where('estado','=','Activo')//no funca
-                ->where('a.nombre', 'LIKE', '%' . $query . '%')
+                ->where('a.estado','=','Activo')//no funca
+                ->where('a.nombre', 'LIKE', '%'.$query.'%')
                 ->orWhere('a.descripcion','LIKE','%'.$query.'%')
-                ->groupBy('a.idarticulo', 'desc')
+                ->orderBy('a.idarticulo', 'desc')
                 ->paginate(7);
 
             return view('almacen.articulo.index', [
@@ -67,7 +67,7 @@ class ArticuloController extends Controller
         if ($request->hasFile('imagen')) { //esta imagen es la q recibimos del formulario
             $file = $request->file('imagen');
             //movemos la imagen q está en file
-            $file->move( '/imagenes/articulos/', $file->getClientOriginalName());
+            $file->move( 'imagenes/articulos/', $file->getClientOriginalName());
             //guardamos la ruta de imagen en el articulo
             $articuloNuevo->imagen = $file->getClientOriginalName();
         }

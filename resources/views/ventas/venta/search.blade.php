@@ -1,6 +1,4 @@
-{!! Form::open(array('url'=>'almacen/categoria','method'=>'GET','autocomplete'=>'off','role'=>'search')) !!}
-
-
+{!! Form::open(array('url'=>'ventas/venta','method'=>'GET','autocomplete'=>'off','role'=>'search')) !!}
 <div class="form-group">
     <div class="input-group">
         <!--El name es el q va a recibir el controlador CategoriaController para hacer el filtro. Por defecto en el value ponemos el search text que nos manda el controlador a través de la vista-->

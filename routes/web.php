@@ -20,5 +20,6 @@ Route::get('/', function () {
 Route::resource('almacen/categoria','CategoriaController');
 Route::resource('almacen/articulo','ArticuloController');
 Route::resource('ventas/cliente','ClienteController');
+Route::resource('ventas/venta','VentaController');
 Route::resource('compras/proveedor','ProveedorController');
 Route::resource('compras/ingreso','IngresoController');
